@@ -1,0 +1,257 @@
+// Função Jogar //
+void jogar ()
+{
+  lcd.fillScreen(ST77XX_BLACK);
+  
+  //Funções do Game em looping //
+  do{
+    score();
+   movimentacao();
+   scores();
+    colisao();
+    //condicoes();
+  }while(jogo.vida != 0);
+
+  fim_de_jogo();
+  novo_jogo();
+}
+
+// Função de Pontuação do jogador //
+void score()
+{
+jogo.score[0]++;
+  ben( 5, 70, 1);
+  
+  delay(500);
+
+}
+
+// Função de Score do game, onde mostra o score e a vida do Ben //
+void scores()
+{
+  lcd.fillRect(0,0,240,30,ORANGE);
+  lcd.setCursor(120, 7);
+  lcd.setTextSize(2); //Define o tamanho do texto
+  lcd.setTextColor(WHITE); //Define a cor do texto
+  lcd.print("Score:");
+  lcd.print(jogo.score[0]);
+  lcd.drawBitmap(10, 2, VIDA, 25, 25, WHITE);
+  lcd.setCursor(40, 7);
+  lcd.print(jogo.vida);
+}
+
+// Função de Colisão, onde identifica se há colisão entre os Bitmaps, e se caso houver, o Ben perde 1 de Vida, até zerar //
+void colisao()
+{
+  if(posicoes.ben + 20 )//> posicoes.pxbiter && posicoes.ben < posicoes.pxbiter + 20 && posicoes.ben + 55 > posicoes.pybiter && posicoes.ben < posicoes.pybiter + 50)
+  {
+  //  lcd.drawBitmap(posicoes.pxben, posicoes.pyben, BEN2, 40, 60, RED);
+    delay(100);
+//    posicoes.pxbiter = 230;
+//    posicoes.pybiter = random(25, 185);
+    jogo.vida -=1;
+  }
+}
+
+// Função onde armazena algumas condições do Jogo //
+void movimentacao()
+{
+  // Condição de movimentação do Ben, apartir do botão pressionado //
+  if(digitalRead(pino_bot1) == LOW)
+  {
+    delay(1);
+   posicoes.ben += 10;
+  }
+  if(digitalRead(pino_bot2) == LOW)
+  {
+    delay(1);
+   posicoes.ben -= 10;
+  }
+
+  // Condição de movimentação do Biter automático //
+  if(jogo.score[0] > 0 && jogo.score[0] < 50)
+  {
+//    posicoes.pxbiter -= 15;
+  }
+  
+  // Aumenta a dificuldade do Game ao passar o Score 50 //
+  if(jogo.score[0] >= 50 && jogo.score[0] < 75)
+  {
+//    posicoes.pxbiter -= 25;
+  }
+  
+  // Aumenta a dificuldade do Game ao passar o Score 75 //
+  if(jogo.score[0] >= 75)
+  {
+//    posicoes.pxbiter -= 35;
+  }
+  
+//  if(posicoes.pxbiter < -30)
+  {
+   // posicoes.pxbiter = 230;
+//    posicoes.pybiter = random(25, 185);
+  }
+  
+
+  // Condição de limites de tela para o Ben //
+  if(posicoes.ben < 0)
+  {
+    posicoes.ben = 0;
+  }
+  if(posicoes.ben < 25)
+  {
+    posicoes.ben = 25;
+  }
+  if(posicoes.ben > 185)
+  {
+    posicoes.ben = 185;
+  }
+}
+
+// Função Fim de Jogo //
+void fim_de_jogo()
+{
+  lcd.fillScreen(ST77XX_BLACK);
+  lcd.setTextSize(5);
+  lcd.setTextColor(RED);
+  lcd.setCursor(0, 20);
+  lcd.print("G");
+  delay(200);
+  lcd.print("a");
+  delay(200);
+  lcd.print("m");
+  delay(200);
+  lcd.print("e");
+  delay(500);
+  lcd.print("O");
+  delay(200);
+  lcd.print("v");
+  delay(200);
+  lcd.print("e");
+  delay(200);
+  lcd.print("r");
+  delay(500);
+  lcd.setTextSize(3);
+  lcd.setTextColor(WHITE);
+  lcd.setCursor(10, 80);
+  delay(200);
+  lcd.print("(Score - ");
+  lcd.print(jogo.score[0]);
+  lcd.print(")");
+  lcd.setTextSize(5);
+  lcd.setCursor(45, 140);
+//  lcd.drawBitmap(20, 145, BEN1, 40, 60, WHITE);
+ // lcd.drawBitmap(140, 145, BITER1, 80, 60, WHITE);
+  lcd.setTextColor(CYAN);
+  lcd.setTextSize(2);
+  lcd.setCursor(0, 220);
+  delay(500);
+  lcd.print("Botao 2 - Volta Menu");
+  menus.seta = 0;
+
+  char letras[26] = {'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'};
+  int i = -1; //Caractere muda letra
+  int x = 0; //Indice
+  int xn = 85;
+ 
+  while(x < 3)
+  {
+    lcd.setTextSize(3);
+    lcd.setTextColor(CYAN, ST77XX_BLACK);
+    lcd.setCursor(xn, 150);
+    lcd.print("_");
+    //aumenta letra
+    if(digitalRead(pino_bot1) == LOW)
+    {
+        i++;
+        if(i == 26){
+          i = -1;
+        }
+      lcd.setCursor(xn,130);
+      lcd.setTextColor(WHITE, ST77XX_BLACK);
+      lcd.print(letras[i]);
+    }
+    
+    //limita em 3 letras
+    if(digitalRead(pino_bot2) == LOW)
+    {
+      jogo.nome[x] = letras[i];
+      x+=1;
+      xn += 20;
+      i = -1;
+      
+    }
+    delay(200);
+  }
+
+  // Ordenação do Rank e Salvamento em EEPROM //
+  if(jogo.score[0] > jogo.score[1])
+  {
+    jogo.score[3] = jogo.score[2];
+    
+    jogo.nome[10] = jogo.nome[7];
+    jogo.nome[11] = jogo.nome[8];
+    jogo.nome[12] = jogo.nome[9];
+    
+    jogo.score[2] = jogo.score[1];
+    
+    jogo.nome[7] = jogo.nome[4];
+    jogo.nome[8] = jogo.nome[5];
+    jogo.nome[9] = jogo.nome[6];
+    
+    jogo.score[1] = jogo.score[0];
+
+    jogo.nome[4] = jogo.nome[0];
+    jogo.nome[5] = jogo.nome[1];
+    jogo.nome[6] = jogo.nome[2];
+    
+  }
+  
+  if(jogo.score[0] > jogo.score[2] && jogo.score[0] < jogo.score[1])
+  {
+    jogo.score[3] = jogo.score[2]; 
+    
+    jogo.nome[10] = jogo.nome[7];
+    jogo.nome[11] = jogo.nome[8];
+    jogo.nome[12] = jogo.nome[9];
+    
+    jogo.score[2] = jogo.score[0];;
+    
+    jogo.nome[7] = jogo.nome[0];
+    jogo.nome[8] = jogo.nome[1];
+    jogo.nome[9] = jogo.nome[2];
+  }
+  
+  if(jogo.score[0] > jogo.score[3] && jogo.score[0] < jogo.score[2])
+  {
+    jogo.score[3] = jogo.score[0];
+    
+    jogo.nome[10] = jogo.nome[0];
+    jogo.nome[11] = jogo.nome[1];
+    jogo.nome[12] = jogo.nome[2];   
+  }
+  for(int k = 4; k < 13; k++){
+    EEPROM.write(k, jogo.nome[k]);
+  }
+
+  for(int z = 1; z < 4 ; z++)
+  {
+    EEPROM.write(z, jogo.score[z]);
+  }
+
+  if(jogo.score < jogo.score[1] && jogo.score < jogo.score[2] && jogo.score < jogo.score[3])
+  {
+    return;
+  }
+}
+
+// Função Novo Jogo //
+void novo_jogo()
+{
+  // posicoes.ben = 10;
+   posicoes.ben = 110;
+//   posicoes.pxbiter = 230;
+//   posicoes.pybiter = 100;
+   jogo.vida = 3;
+   jogo.score[0] = 0;
+}
