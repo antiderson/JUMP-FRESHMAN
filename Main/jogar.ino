@@ -61,7 +61,7 @@ void movimentacao()
       delay(1);
       ben(5, px, 0);
       lcd.fillRect(20,30,50,240, BLACK);
-      ben(5 , px+ 50 , 1);
+      ben(5 , px++ , 1);
     }
     if (digitalRead(pino_bot2) == LOW)
     {
