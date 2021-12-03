@@ -6,7 +6,8 @@
 #include <SPI.h>
 
 //DEFINES ///////////////////////////////////////////////////////////////////////////////////////////////////////
-
+//void menu();
+//void setas();
 #define TFT_CS     10 //Define a porta de pinagem CS
 #define TFT_RST    8  //Define a porta de pinagem do RES - RESET
 #define TFT_DC     9  //Define a porta de pinagem DC
@@ -52,6 +53,22 @@ Adafruit_ST7789 lcd = Adafruit_ST7789(TFT_CS, TFT_DC, TFT_RST);
       }
     }
 
+    void alturas(int x, int y, int game)
+    {
+      if(game == 1)
+      {
+        ben(5, 25, 1);
+        }
+      if (game == 2)
+      {
+        ben(5, 85, 1);
+        }
+      if (game == 3)
+      {
+        ben(5, 145, 1);
+        }
+    }
+
 
 const unsigned char VIDA [] PROGMEM = {
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x0f, 0xc1, 0xf8, 0x00, 0x1f, 0xe3, 0xfc, 0x00, 
@@ -81,6 +98,7 @@ typedef struct POSICOES{
 typedef struct MENUS{
   byte tela = 0;
   byte seta = 0;
+  byte game = 0;
 };
 
 //DEFINIÇÃO DE STRUCTS ///////////////////////////////////////////////////////////////////////////////////////////
@@ -94,6 +112,7 @@ struct MENUS menus;
 //SETUP /////////////////////////////////////////////////////////////////////////////////////////////////////////
 void setup(void) 
 {
+  Serial.begin(9600);
   lcd.init(240, 240, SPI_MODE2); // Inicia o Display
   
   pinMode(pino_bot1, INPUT_PULLUP); //Seta a pinagem dos botoes usando o resistor interno
@@ -146,4 +165,6 @@ void setup(void)
 void loop()
 {
   setas();
+  
+  
 }

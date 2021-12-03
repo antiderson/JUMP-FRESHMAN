@@ -1,4 +1,3 @@
 # JUMP-FRESHMAN
 
-fazer as 3 plataformas do personagem.
-movimentação em X do inimigo.
+fazer as 3 posições do inimigos e fazer seu respawn de forma randomica;
