@@ -52,8 +52,18 @@ void movimentacao()
     // cor = 0;
     v1 = digitalRead(pino_bot1);
     v2 = digitalRead(pino_bot2);
+    //FUNÇÃO QUE DEFINE O INIMIGO EM 3 POSIÇÕES RANDOMICAS//
+      biter(pxb--, 25, 1);
+    lcd.fillRect(70, 55, 180, 50, BLACK);
+    if (pxb < 70) {
+      biter(pxb, 25, 0);
+    }
+    biter (70, 85, 1);
 
+    biter(70, 145, 1);
 
+    
+    //FUNÇÃO QUE DEFINE O MOVIMENTO DO PERSONAGEM ATRAVEZ DOS BOTÕES//
     if (v1 == LOW)
     {
       delay(100);
