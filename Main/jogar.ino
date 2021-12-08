@@ -8,8 +8,9 @@ void jogar ()
   do {
     scores();
     movimentacao();
-//    bate();
-  //condicoes();
+//    colisao();
+//  bate();
+//  condicoes();
   } while (jogo.vida != 0);
 
   // fim_de_jogo();
@@ -34,7 +35,6 @@ void scores()
 }
 
 void movimentacao()
-
 {
   int px, pxb;
   px = 70;
@@ -54,19 +54,21 @@ void movimentacao()
     v2 = digitalRead(pino_bot2);
     //FUNÇÃO QUE DEFINE O INIMIGO EM 3 POSIÇÕES RANDOMICAS//
     biter(pxb--, 25, 1);
+    if (pxb == -90 && cor == 3){
+      Serial.println("Colisao");
+ }
     lcd.fillRect(70, 55, 180, 50, BLACK);
-  
-    biter (70, 85, 1);
 
-    biter(70, 145, 1);
 
-  void bate()
-  {
-    colisao = abs(pxb - ben)
-    if(colisao <30){
-      vida = vida- 1;
-    }
-  }
+
+
+
+   
+    biter (pxb--, 85, 1);
+    lcd.fillRect(70, 115, 180, 50, BLACK);
+
+    biter(pxb--, 145, 1);
+    lcd.fillRect(70, 175, 180, 50, BLACK);
   
     if (v1 == LOW)
     {
@@ -121,30 +123,6 @@ void movimentacao()
 
     }
   }
-
-  /*   if (digitalRead(pino_bot2)== LOW)
-     {
-       delay(1);
-       cor --;
-       if(cor == 1)
-       {
-       ben(5, 25, 1);  //define a cruz na primeira posição//
-       //fazer os quadrados aqui!!!
-         }
-     if(cor == 2)
-     {
-       ben(5, 85, 2); //define a cruz na segunda posição//
-       //fazer os quadrados aqui!!
-       }
-     if(cor == 3)
-     {
-      ben(5, 145, 3); //define a cruz na terceira posição//
-      //fazer os quadrados aqui!!
-       }
-       }*/
-
-
-
   //ben( 5, 70, 1);
   //biter(50, 70, 1);
 
