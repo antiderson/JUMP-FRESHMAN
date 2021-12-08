@@ -8,9 +8,8 @@ void jogar ()
   do {
     scores();
     movimentacao();
-
-    //   colisao();
-    //condicoes();
+//    bate();
+  //condicoes();
   } while (jogo.vida != 0);
 
   // fim_de_jogo();
@@ -37,8 +36,9 @@ void scores()
 void movimentacao()
 
 {
-  int px;
+  int px, pxb;
   px = 70;
+  pxb = 70;
   int vida = 3;
   //jogo.score[0]++;
   //delay(50);
@@ -53,17 +53,21 @@ void movimentacao()
     v1 = digitalRead(pino_bot1);
     v2 = digitalRead(pino_bot2);
     //FUNÇÃO QUE DEFINE O INIMIGO EM 3 POSIÇÕES RANDOMICAS//
-      biter(pxb--, 25, 1);
+    biter(pxb--, 25, 1);
     lcd.fillRect(70, 55, 180, 50, BLACK);
-    if (pxb < 70) {
-      biter(pxb, 25, 0);
-    }
+  
     biter (70, 85, 1);
 
     biter(70, 145, 1);
 
-    
-    //FUNÇÃO QUE DEFINE O MOVIMENTO DO PERSONAGEM ATRAVEZ DOS BOTÕES//
+  void bate()
+  {
+    colisao = abs(pxb - ben)
+    if(colisao <30){
+      vida = vida- 1;
+    }
+  }
+  
     if (v1 == LOW)
     {
       delay(100);
