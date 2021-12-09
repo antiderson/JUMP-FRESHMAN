@@ -1,16 +1,17 @@
 // Função Jogar //
+ 
 void jogar ()
 {
   lcd.fillScreen(ST77XX_BLACK);
-  int sorteio;
+  //int sorteio;
 
   //Funções do Game em looping //
   do {
     scores();
     movimentacao();
-//    colisao();
-//  bate();
-//  condicoes();
+    //    colisao();
+    //  bate();
+    //  condicoes();
   } while (jogo.vida != 0);
 
   // fim_de_jogo();
@@ -40,36 +41,49 @@ void movimentacao()
   px = 70;
   pxb = 70;
   int vida = 3;
-  //jogo.score[0]++;
+  jogo.score[0]++;
   //delay(50);
   //ben( 5, 70, 1);
   int cor = 0;
   int v1, v2;
 
+
+  
+
+
+
   while (vida != 0)
   {
-
+    
     // cor = 0;
     v1 = digitalRead(pino_bot1);
     v2 = digitalRead(pino_bot2);
+
+    
     //FUNÇÃO QUE DEFINE O INIMIGO EM 3 POSIÇÕES RANDOMICAS//
     biter(pxb--, 25, 1);
-    if (pxb == -90 && cor == 3){
-      Serial.println("Colisao");
- }
+    if (pxb == -90 && cor == 3) {
+     jogo.vida--;
+       lcd.fillRect(35, 0, 30, 30, ORANGE);
+       lcd.print(jogo.vida--);
+    }
     lcd.fillRect(70, 55, 180, 50, BLACK);
 
-
-
-
-
-   
     biter (pxb--, 85, 1);
-    lcd.fillRect(70, 115, 180, 50, BLACK);
+    lcd.fillRect(70, 115, 180, 50, BLACK);    
 
     biter(pxb--, 145, 1);
     lcd.fillRect(70, 175, 180, 50, BLACK);
-  
+
+
+
+
+
+
+
+
+    
+
     if (v1 == LOW)
     {
       delay(100);
@@ -102,7 +116,6 @@ void movimentacao()
       if (cor <= 1) {
         cor = 1;
       }
-      Serial.println(cor);
 
       if (cor == 1)
       {
